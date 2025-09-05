@@ -1,0 +1,24 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeeklyOSApi", "WeeklyOSApi.csproj", "{ACDCB0CE-D749-A684-636E-91BC2D7F1427}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ACDCB0CE-D749-A684-636E-91BC2D7F1427}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACDCB0CE-D749-A684-636E-91BC2D7F1427}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACDCB0CE-D749-A684-636E-91BC2D7F1427}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACDCB0CE-D749-A684-636E-91BC2D7F1427}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {32669A5F-B2DB-49E1-87AC-33F27E88B001}
+	EndGlobalSection
+EndGlobal
