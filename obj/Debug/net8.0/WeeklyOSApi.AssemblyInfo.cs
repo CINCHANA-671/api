@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("WeeklyOSApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d4ddaf3384e25872708f6e6c920bbdbed3c1361d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+08ab12dfc52c0fcbb189b5a4e12b4af958cb4cab")]
 [assembly: System.Reflection.AssemblyProductAttribute("WeeklyOSApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("WeeklyOSApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
