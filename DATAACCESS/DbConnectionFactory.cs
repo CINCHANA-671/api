@@ -12,7 +12,7 @@ namespace WeeklyOSApi.DATAACCESS
             _config = config;
         }
 
-        public IDbConnection Create() =>
-            new SqlConnection(_config.GetConnectionString("DefaultConnection"));
+        public IDbConnection CreateConnection() 
+            => new SqlConnection(_config.GetConnectionString("DefaultConnection"));
     }
 }

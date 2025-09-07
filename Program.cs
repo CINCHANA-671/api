@@ -4,12 +4,11 @@ using WeeklyOSApi.BUSINESSLOGIC;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// MVC + Swagger
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// DI
+// Dependency Injection
 builder.Services.AddSingleton<DbConnectionFactory>();
 builder.Services.AddScoped<WeeklyOSService>();
 builder.Services.AddScoped<WeeklyOSManager>();
