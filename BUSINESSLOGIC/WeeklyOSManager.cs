@@ -3,6 +3,10 @@ using WeeklyOSApi.SERVICES;
 
 namespace WeeklyOSApi.BUSINESSLOGIC
 {
+    /// <summary>
+    /// Business Logic Manager for WeeklyOS operations
+    /// Handles business rules and orchestrates service calls
+    /// </summary>
     public class WeeklyOSManager
     {
         private readonly WeeklyOSService _service;
@@ -12,6 +16,9 @@ namespace WeeklyOSApi.BUSINESSLOGIC
             _service = service;
         }
 
+        /// <summary>
+        /// Retrieves weekly parameters for report generation
+        /// </summary>
         public async Task<ApiResponse<WeeklyParametersResult>> GetWeeklyParametersAsync(WeeklyParametersRequest req, CancellationToken ct = default)
         {
             try
@@ -34,6 +41,9 @@ namespace WeeklyOSApi.BUSINESSLOGIC
             }
         }
 
+        /// <summary>
+        /// Retrieves weekly activities for an employee
+        /// </summary>
         public async Task<ApiResponse<IEnumerable<WeeklyActivityRow>>> GetWeeklyActivitiesAsync(WeeklyActivitiesQuery q, CancellationToken ct = default)
         {
             try
