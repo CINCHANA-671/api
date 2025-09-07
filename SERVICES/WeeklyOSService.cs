@@ -15,7 +15,7 @@ namespace WeeklyOSApi.SERVICES
             _factory = factory;
         }
 
-        public async Task<WeeklyParametersResult> GetWeeklyParametersAsync(WeeklyParametersRequest req)
+        public async Task<WeeklyParametersResult> GetWeeklyParametersAsync(WeeklyParametersRequest req, CancellationToken ct = default)
         {
             using var conn = (SqlConnection)_factory.CreateConnection();
             
@@ -31,7 +31,7 @@ namespace WeeklyOSApi.SERVICES
             cmd.Parameters.AddWithValue("@Param", req.Param);
             cmd.Parameters.AddWithValue("@InstanceId", req.InstanceId);
 
-            await conn.OpenAsync();
+            await conn.OpenAsync(ct);
 
             var ds = new DataSet();
             using var da = new SqlDataAdapter(cmd);
@@ -48,7 +48,7 @@ namespace WeeklyOSApi.SERVICES
             };
         }
 
-        public async Task<IEnumerable<WeeklyActivityRow>> GetWeeklyActivitiesAsync(WeeklyActivitiesQuery q)
+        public async Task<IEnumerable<WeeklyActivityRow>> GetWeeklyActivitiesAsync(WeeklyActivitiesQuery q, CancellationToken ct = default)
         {
             using var conn = _factory.CreateConnection();
             
@@ -60,6 +60,114 @@ namespace WeeklyOSApi.SERVICES
                     FromDate = q.FromDate,
                     ToDate = q.ToDate,
                     CurrentMonth = q.CurrentMonth
+                },
+                commandType: CommandType.StoredProcedure
+            );
+            
+            return result;
+        }
+
+        public async Task<IEnumerable<NewApiResult>> GetNewApiDataAsync(NewApiRequest req, CancellationToken ct = default)
+        {
+            using var conn = _factory.CreateConnection();
+            
+            var result = await conn.QueryAsync<NewApiResult>(
+                "WF_OSWeeklyActivities_GetNewApiData",
+                new
+                {
+                    EmployeeId = req.EmployeeId,
+                    MasterId = req.MasterId,
+                    InstanceId = req.InstanceId
+                },
+                commandType: CommandType.StoredProcedure
+            );
+            
+            return result;
+        }
+
+        public async Task<int> SaveWeeklyActivitiesAsync(SaveWeeklyActivitiesRequest req, CancellationToken ct = default)
+        {
+            using var conn = _factory.CreateConnection();
+            
+            var result = await conn.ExecuteAsync(
+                "WF_OSWeeklyActivities_Save",
+                new
+                {
+                    EmployeeId = req.EmployeeId,
+                    FromDate = req.FromDate,
+                    ToDate = req.ToDate,
+                    Activities = string.Join(",", req.Activities.Select(a => a.Activity))
+                },
+                commandType: CommandType.StoredProcedure
+            );
+            
+            return result;
+        }
+
+        public async Task<ImportValidationResult> ValidateImportMonthYearAsync(ImportValidationRequest req, CancellationToken ct = default)
+        {
+            using var conn = _factory.CreateConnection();
+            
+            var result = await conn.QueryFirstOrDefaultAsync<ImportValidationResult>(
+                "WF_OSWeeklyActivities_ValidateImportMonthYear",
+                new
+                {
+                    RWMEmpId = req.RWMEmpId,
+                    MasterId = req.MasterId,
+                    InstanceId = req.InstanceId
+                },
+                commandType: CommandType.StoredProcedure
+            );
+            
+            return result ?? new ImportValidationResult { IsValid = false, Message = "Validation failed" };
+        }
+
+        public DataTable ReadExcelFile(IFormFile excelFile)
+        {
+            // Placeholder implementation for Excel reading
+            // In a real implementation, you would use a library like EPPlus or ClosedXML
+            var dataTable = new DataTable();
+            dataTable.Columns.Add("NoData");
+            
+            if (excelFile == null || excelFile.Length == 0)
+            {
+                var row = dataTable.NewRow();
+                row["NoData"] = "NO data available for respective WN.";
+                dataTable.Rows.Add(row);
+            }
+            
+            return dataTable;
+        }
+
+        public bool ValidateLeaveUtilized(DataTable excelData)
+        {
+            // Placeholder validation for Leave Utilized values
+            // In a real implementation, you would validate the actual Excel data
+            if (excelData.Columns.Contains("LeaveUtilized"))
+            {
+                foreach (DataRow row in excelData.Rows)
+                {
+                    if (row["LeaveUtilized"] != null && 
+                        decimal.TryParse(row["LeaveUtilized"].ToString(), out decimal value))
+                    {
+                        if (value < 1 || value > 5)
+                            return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        public async Task<int> ImportExcelDataAsync(DataTable excelData, CancellationToken ct = default)
+        {
+            using var conn = _factory.CreateConnection();
+            
+            // Placeholder implementation for Excel data import
+            var result = await conn.ExecuteAsync(
+                "WF_OSWeeklyActivities_Import_ChildDetails",
+                new
+                {
+                    ExcelData = excelData.Rows.Count
                 },
                 commandType: CommandType.StoredProcedure
             );
